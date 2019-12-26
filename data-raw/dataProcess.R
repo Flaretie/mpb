@@ -1,8 +1,9 @@
 one_char <- rwstats::oneChar
 two_char <- rwstats::twoChar
-drugnames <- read.delim2("data-raw/data.txt", encoding = 'UTF-8', header = F)
+drugnames <- read.delim2("data-raw/data.txt", header = F)
 
 drugnames <- as.data.frame(drugnames)
+Encoding(levels(drugnames$V1)) <- "UTF-8"
 
 tempChar <- do.call(rbind,sapply(as.character(two_char$character), FUN = function(x) strsplit(x,"")))
 for(j in 1:2) {

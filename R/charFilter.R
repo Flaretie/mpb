@@ -10,6 +10,5 @@ charFilter <- function(userchar, realworld) {
     mergedData <- mergedData[order(mergedData$log, decreasing = T),]
   }
   rownames(mergedData) <- NULL
-  return(mergedData)x
+  return(mergedData)
 }
-
