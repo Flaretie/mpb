@@ -37,7 +37,7 @@ Extract words based on MPMI+BE alogrithm
 }
 \examples{
 \dontrun{
-mpmiExcraction(drugnames1,
+mpmiExcraction(drugnames,
                ChineseCharFilter = T,
                lambda = 0.25,
                optics = T,

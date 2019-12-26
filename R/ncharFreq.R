@@ -38,7 +38,7 @@ ncharFreq <- function(data, x, charfeq = NULL) {
 
   if(x == 2 & identical(charfeq, userOneChar)) {
     # calcualte character frequency in each word
-    temp_df <- do.call(rbind,sapply(as.character(temFeq$character), FUN = function(x) strsplit(x,"")))
+    temp_df <- do.call(rbind, sapply(as.character(temFeq$character), FUN = function(x) strsplit(x,"")))
     for(j in 1:x) {
       temFeq[,LETTERS[j]]<- temp_df[,j] # create new column to store single character
       temFeq[,LETTERS[j]] <- unlist(lapply(temFeq[,LETTERS[j]],

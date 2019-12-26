@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' mpmiExcraction(drugnames1,
+#' mpmiExcraction(drugnames,
 #'                ChineseCharFilter = T,
 #'                lambda = 0.25,
 #'                optics = T,
@@ -61,7 +61,6 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   twoCharFilter$normLog <- with(twoCharFilter, normalize(twoCharFilter$log))
   twoCharFilter$normBE <- with(twoCharFilter, normalize(innerEntropy-outerEntropy))
   twoCharFilter$score <- with(twoCharFilter,(1-lambda)*normLog-lambda*normBE)
-  twoCharFilter <- twoCharFilter
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
 
   Optics(steps, optics, threshold, lambda,bayesianCutoff)
@@ -75,12 +74,12 @@ seed <- function(userTwoChar) {
   cat(">>> Mining seeds...", "\n")
   userTwoChar <- userTwoChar[userTwoChar$test_log > 0,]
   userTwoChar <- userTwoChar[order(userTwoChar$test_log, decreasing = T),]
-  userTwoCharPriority <- userTwoChar[userTwoChar$test_log >= as.double(stats::quantile()(userTwoChar$test_log)[3]),]
+  userTwoCharPriority <- userTwoChar[userTwoChar$test_log >= as.double(stats::quantile(userTwoChar$test_log)[3]),]
 
 
-  twoCharFilter <-suppressWarnings(charFilter(userTwoChar[userTwoChar$test_log < as.double(stats::quantile()(userTwoChar$test_log)[3]),],
+  twoCharFilter <-suppressWarnings(charFilter(userTwoChar[userTwoChar$test_log < as.double(stats::quantile(userTwoChar$test_log)[3]),],
                                               two_char))
-  twoCharFilter <- twoCharFilter[twoCharFilter$log >= as.double(stats::quantile()(twoCharFilter$log)[2]),][,c("character")]
+  twoCharFilter <- twoCharFilter[twoCharFilter$log >= as.double(stats::quantile(twoCharFilter$log)[2]),][,c("character")]
   userTwoCharPriority<- userTwoCharPriority[, c("character")]
   userTwoChar <- append(levels(droplevels(userTwoCharPriority)), twoCharFilter)
   tempchar <- ncharFreq(userdf_t2h, 2, userOneChar)
@@ -112,7 +111,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       twoCharFilter2$score <- with(twoCharFilter2,
                                    (1-0.01*i*n)*normLog-0.01*i*n*normBE)
       ifelse(threshold <= 100 & threshold >= 1,
-             twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile()(twoCharFilter2$score,
+             twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile(twoCharFilter2$score,
                                                                               probs = 1:100/100)[threshold],],
              warning("Threshold must be an integer between 1 and 100"))
 
@@ -155,7 +154,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     twoCharFilter2 <- twoCharFilter
     twoCharFilter2$score <- with(twoCharFilter2,
                                  (1-lambda)*normLog-lambda*normBE)
-    twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile()(twoCharFilter2$score, probs = 1:100/100)[threshold],]
+    twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile(twoCharFilter2$score, probs = 1:100/100)[threshold],]
 
     cl <- nextWordMiner(twoCharFilter2,2, bayesianCutoff)
     cl$cont <- unique(cl$cont[cl$cont %in% threeCharFilter$character == TRUE])
