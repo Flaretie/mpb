@@ -7,11 +7,13 @@
 #' \item{\code{V1}}{Target string.}
 #' }
 #' @examples
+#' \dontrun{
 #'  drugnames
+#' }
 "drugnames"
 
 
-#' Chinese Word Frequency with two characters.
+#' Frequency, PMI and BE dataframe of Chinese words wtih two characters.
 #'
 #' This dataframe contains Chinese Word with two characters with its branch entropy and pmi value
 #'
@@ -25,5 +27,7 @@
 #' \item{\code{real_log}}{pmi value of target word.}
 #' }
 #' @examples
-#'  twoChar
-"twoChar"
+#' \dontrun{
+#'  two_char
+#'  }
+"two_char"

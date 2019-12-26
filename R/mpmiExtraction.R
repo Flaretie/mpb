@@ -1,6 +1,6 @@
 #' @name mpmiExcraction
 #' @title Extract words based on MPMI+BE alogrithm
-#' @description
+#' @description Extract words based on MPMI+BE alogrithm
 #' @param df One column dataframe.
 #' @param ChineseCharFilter Drop non-Chinese characters. Default is True.
 #' @param lambda Weight distribution between PMI and BE, which will directly affect the results.
@@ -9,12 +9,17 @@
 #' @param threshold threshold for the final score.
 #' @param bayesianCutoff threshold for the bayesian probabilty value in word extension process
 #'
-#' @inheritParams segWords
 #' @return List of extracted strings.
 #' @export
 #' @examples
 #' \dontrun{
-#' mpmiExcraction(drugnames1, ChineseCharFilter = T, lambda = 0.25, optics = T, steps = 100, threshold = 30, bayesianCutoff = 0.6)
+#' mpmiExcraction(drugnames1,
+#'                ChineseCharFilter = T,
+#'                lambda = 0.25,
+#'                optics = T,
+#'                steps = 100,
+#'                threshold = 30,
+#'                bayesianCutoff = 0.6)
 #' }
 
 mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, steps = 100, threshold,bayesianCutoff){
@@ -23,7 +28,7 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
 
   # process user file here.
   cat(">>> Start Processing import file...", "\n")
-  userOneChar <<- onecharFreq(userdf_t2h)
+  userOneChar <- onecharFreq(userdf_t2h)
   userTwoChar <- ncharFreq(userdf_t2h, 2, userOneChar)
   userThreeChar <- ncharFreq(userdf_t2h, 3)
   userFourChar <- ncharFreq(userdf_t2h, 4)
@@ -36,27 +41,27 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   # process real world data.
   cat(">>> Merging and Filtering data...", "\n")
 
-  threeCharFilter <<- suppressWarnings(charFilter(userThreeChar, threeChar))
-  fourCharFilter <<- suppressWarnings(charFilter(userFourChar, fourChar))
-  fiveCharFilter <<- suppressWarnings(charFilter(userFiveChar, fiveChar))
+  threeCharFilter <- suppressWarnings(charFilter(userThreeChar, rwstats::threeChar))
+  fourCharFilter <- suppressWarnings(charFilter(userFourChar, rwstats::fourChar))
+  fiveCharFilter <- suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar))
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
 
 
   #
   cat(">>> Branch Entropy calculating...", "\n")
   cat(" Inner Entropy calculating...", "\n")
-  twoCharFilter$innerEntropy  <- unlist(pblapply(twoCharFilter$character,
+  twoCharFilter$innerEntropy  <- unlist(pbapply::pblapply(twoCharFilter$character,
                                                    FUN =  function(x) innerH(x)))
 
   cat(" Outer Entropy calculating...", "\n")
-  twoCharFilter$outerEntropy  <- unlist(pblapply(twoCharFilter$character,
+  twoCharFilter$outerEntropy  <- unlist(pbapply::pblapply(twoCharFilter$character,
                                                    FUN =  function(x) outerH(x)))
-  outliers <- boxplot(twoCharFilter$log, plot=FALSE)$out
+  outliers <- graphics::boxplot(twoCharFilter$log, plot=FALSE)$out
   twoCharFilter <- twoCharFilter[-which(twoCharFilter$log %in% outliers),]
   twoCharFilter$normLog <- with(twoCharFilter, normalize(twoCharFilter$log))
   twoCharFilter$normBE <- with(twoCharFilter, normalize(innerEntropy-outerEntropy))
   twoCharFilter$score <- with(twoCharFilter,(1-lambda)*normLog-lambda*normBE)
-  twoCharFilter <<- twoCharFilter
+  twoCharFilter <- twoCharFilter
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
 
   Optics(steps, optics, threshold, lambda,bayesianCutoff)
@@ -70,31 +75,31 @@ seed <- function(userTwoChar) {
   cat(">>> Mining seeds...", "\n")
   userTwoChar <- userTwoChar[userTwoChar$test_log > 0,]
   userTwoChar <- userTwoChar[order(userTwoChar$test_log, decreasing = T),]
-  userTwoCharPriority <- userTwoChar[userTwoChar$test_log >= as.double(quantile(userTwoChar$test_log)[3]),]
+  userTwoCharPriority <- userTwoChar[userTwoChar$test_log >= as.double(stats::quantile()(userTwoChar$test_log)[3]),]
 
 
-  twoCharFilter <-suppressWarnings(charFilter(userTwoChar[userTwoChar$test_log < as.double(quantile(userTwoChar$test_log)[3]),],
-                                              twoChar))
-  twoCharFilter <- twoCharFilter[twoCharFilter$log >= as.double(quantile(twoCharFilter$log)[2]),][,c("character")]
+  twoCharFilter <-suppressWarnings(charFilter(userTwoChar[userTwoChar$test_log < as.double(stats::quantile()(userTwoChar$test_log)[3]),],
+                                              two_char))
+  twoCharFilter <- twoCharFilter[twoCharFilter$log >= as.double(stats::quantile()(twoCharFilter$log)[2]),][,c("character")]
   userTwoCharPriority<- userTwoCharPriority[, c("character")]
   userTwoChar <- append(levels(droplevels(userTwoCharPriority)), twoCharFilter)
   tempchar <- ncharFreq(userdf_t2h, 2, userOneChar)
   userTwoChar <- tempchar[userTwoChar %in% tempchar$character,]
   userTwoChar$character <- as.character(userTwoChar$character)
   userTwoChar$test_log <- with(userTwoChar, log2(pct/(A*B)))
-  twoCharFilter <- suppressWarnings(charFilter(userTwoChar, twoChar))
+  twoCharFilter <- suppressWarnings(charFilter(userTwoChar, two_char))
 
   userTwoChar_drop <- userTwoChar[which(userTwoChar$character %in% twoCharFilter$character==F),]
   userTwoChar_drop <- userTwoChar_drop[,c("character","test_log")]
   colnames(userTwoChar_drop) <- c("character","log")
 
-  twoCharFilter <- bind_rows(userTwoChar_drop, twoCharFilter)
+  twoCharFilter <-dplyr::bind_rows(userTwoChar_drop, twoCharFilter)
   return(twoCharFilter)
 }
 
 Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
   if (optics == TRUE) {
-    pb <- progress_bar$new(
+    pb <- progress::progress_bar$new(
       format = "  Optimizating [:bar] :percent in :elapsed",
       total = steps, clear = FALSE, width= 60
     )
@@ -107,7 +112,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       twoCharFilter2$score <- with(twoCharFilter2,
                                    (1-0.01*i*n)*normLog-0.01*i*n*normBE)
       ifelse(threshold <= 100 & threshold >= 1,
-             twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > quantile(twoCharFilter2$score,
+             twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile()(twoCharFilter2$score,
                                                                               probs = 1:100/100)[threshold],],
              warning("Threshold must be an integer between 1 and 100"))
 
@@ -141,8 +146,8 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       pb$tick()
       Sys.sleep(1 / 100)
     }
-    optlist <<- as.data.frame(table(unlist(optlist)))
-    num_char <<- as.data.frame(unlist(num_char))
+    optlist <- as.data.frame(table(unlist(optlist)))
+    num_char <- as.data.frame(unlist(num_char))
     return(cat("DONE ", crayon::green(cli::symbol$tick), "\n",
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("optlist"))))
   } else {
@@ -150,7 +155,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     twoCharFilter2 <- twoCharFilter
     twoCharFilter2$score <- with(twoCharFilter2,
                                  (1-lambda)*normLog-lambda*normBE)
-    twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > quantile(twoCharFilter2$score, probs = 1:100/100)[threshold],]
+    twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile()(twoCharFilter2$score, probs = 1:100/100)[threshold],]
 
     cl <- nextWordMiner(twoCharFilter2,2, bayesianCutoff)
     cl$cont <- unique(cl$cont[cl$cont %in% threeCharFilter$character == TRUE])
@@ -176,7 +181,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     #final_dn <- append(final_dn,cl$cont)
     #final_dn <- append(final_dn,cl2$cont)
     #final_dn <- append(final_dn,cl3$cont)
-    final_dn <<- unique(unlist(final_dn))
+    final_dn <- unique(unlist(final_dn))
     return(cat("DONE ", crayon::green(cli::symbol$tick), "\n",
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("final_dn"))))
   }

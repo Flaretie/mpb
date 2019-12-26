@@ -1,23 +1,21 @@
-one_char <- read.csv2('data-raw/1f.csv', encoding = "UTF-8", header = T)
-twoChar <- read.csv2('data-raw/2f.csv', encoding = "UTF-8", header = F)
+one_char <- rwstats::oneChar
+two_char <- rwstats::twoChar
+drugnames <- read.delim2("data-raw/data.txt", encoding = 'UTF-8', header = F)
 
-colnames(twoChar) <- colnames(one_char)
+drugnames <- as.data.frame(drugnames)
 
-Encoding(levels(one_char$character)) <- "UTF-8"
-Encoding(levels(twoChar$character)) <- "UTF-8"
-
-tempChar <- do.call(rbind,sapply(as.character(twoChar$character), FUN = function(x) strsplit(x,"")))
+tempChar <- do.call(rbind,sapply(as.character(two_char$character), FUN = function(x) strsplit(x,"")))
 for(j in 1:2) {
-  twoChar[,LETTERS[j]]<- tempChar[,j] # create new column to store single character
-  twoChar[,LETTERS[j]] <- unlist(lapply(twoChar[,LETTERS[j]],
+  two_char[,LETTERS[j]]<- tempChar[,j] # create new column to store single character
+  two_char[,LETTERS[j]] <- unlist(lapply(two_char[,LETTERS[j]],
                                         FUN = function(x) one_char[one_char$character == x,]$pct))
   #replace the single char by its global frequency
 }
-twoChar$real_log <- with(twoChar, log2(pct/(A*B)))
+two_char$real_log <- with(two_char, log2(pct/(A*B)))
 
+Encoding(levels(two_char$character)) <- "UTF-8"
+Encoding(levels(drugnames$V1)) <- "UTF-8"
 
-drugnames <- read.delim2("data-raw/data.txt", encoding = 'UTF-8', header = F)
-drugnames <- as.data.frame(drugnames)
 
 usethis::use_data(drugnames, overwrite = TRUE)
-usethis::use_data(twoChar, overwrite = TRUE)
+usethis::use_data(two_char, overwrite = TRUE)

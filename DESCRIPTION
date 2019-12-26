@@ -6,21 +6,20 @@ Authors@R: c(
     person("Xinjin", "Zhang", , "zhangxinjin@wondersgroup.com", c("aut")), 
     person("Bin", "Cui", , "CB11302@RJH.COM.CN", c("aut"))
     )
-Description: Approach a algorithm which is based on the combination of Real-World filted PMI and BE. 
+Description: Approach an algorithm which is based on the combination of Real-World filted PMI and BE.
 Depends:
     R (>= 3.3.2)
 Imports:
-    readr (>= 1.1.1),
     progress (>= 1.2.2),
     pbapply (>= 1.4-2),
     rwstats (>= 0.1),
-    psych (>= 1.9.12),
-    data.table (>= 1.10.4-3),
-    tidyr (>= 0.7.2),
-    plyr (>= 1.8.4),
-    reshape (>= 1.4.3),
-    dplyr (>= 0.7.4),
+    dplyr (>= 0.8.3),
+    stats (>= 3.3.2),
+    graphics (>= 3.3.2),
+    reshape2 (>= 1.4.3),
+    cli (>= 2.0.0),
+    crayon (>= 1.3.4)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
