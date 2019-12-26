@@ -1,6 +1,5 @@
 # install required packages
-list.of.packages <- c("reshape2",
-                      "dplyr",
+list.of.packages <- c("dplyr",
                       "rwstats",
                       "pbapply",
                       "progress",
