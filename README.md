@@ -2,6 +2,8 @@
 # mpb
 
 <!-- badges: start -->
+[![Build status](https://ci.appveyor.com/api/projects/status/jq6fvqt705g7e0mx/branch/master?svg=true)](https://ci.appveyor.com/project/Flaretie/mpb/branch/master)
+[![Build Status](https://travis-ci.org/Flaretie/mpb.svg?branch=master)](https://travis-ci.org/Flaretie/mpb)
 <!-- badges: end -->
 
 The goal of mpb is to ...
