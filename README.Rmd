@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/mpb)](https://CRAN.R-project.org/package=mpb)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Flaretie/mpb?branch=master&svg=true)](https://ci.appveyor.com/project/Flaretie/mpb)
 <!-- badges: end -->
 
 The goal of mpb is to ...
