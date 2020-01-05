@@ -28,8 +28,10 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
 
   # process user file here.
   cat(">>> Start Processing import file...", "\n")
-  userOneChar <- onecharFreq(userdf_t2h)
-  userTwoChar <- ncharFreq(userdf_t2h, 2, userOneChar)
+  assign("userOneChar", onecharFreq(userdf_t2h), envir = .GlobalEnv)
+  #userOneChar <<- onecharFreq(userdf_t2h)
+  #userTwoChar <<- ncharFreq(userdf_t2h, 2, userOneChar)
+  assign("userTwoChar", ncharFreq(userdf_t2h, 2, userOneChar), envir = .GlobalEnv)
   userThreeChar <- ncharFreq(userdf_t2h, 3)
   userFourChar <- ncharFreq(userdf_t2h, 4)
   userFiveChar <- ncharFreq(userdf_t2h, 5)
@@ -41,27 +43,37 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   # process real world data.
   cat(">>> Merging and Filtering data...", "\n")
 
-  threeCharFilter <- suppressWarnings(charFilter(userThreeChar, rwstats::threeChar))
-  fourCharFilter <- suppressWarnings(charFilter(userFourChar, rwstats::fourChar))
-  fiveCharFilter <- suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar))
+  #threeCharFilter <<- suppressWarnings(charFilter(userThreeChar, rwstats::threeChar))
+  #fourCharFilter <<- suppressWarnings(charFilter(userFourChar, rwstats::fourChar))
+  #fiveCharFilter <<- suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar))
+  assign("threeCharFilter", suppressWarnings(charFilter(userThreeChar, rwstats::threeChar)), envir = .GlobalEnv)
+  assign("fourCharFilter", suppressWarnings(charFilter(userFourChar, rwstats::fourChar)), envir = .GlobalEnv)
+  assign("fiveCharFilter", suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar)), envir = .GlobalEnv)
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
 
 
   #
   cat(">>> Branch Entropy calculating...", "\n")
-  cat(" Inner Entropy calculating...", "\n")
-  twoCharFilter$innerEntropy  <- unlist(pbapply::pblapply(twoCharFilter$character,
-                                                   FUN =  function(x) innerH(x)))
 
-  cat(" Outer Entropy calculating...", "\n")
-  twoCharFilter$outerEntropy  <- unlist(pbapply::pblapply(twoCharFilter$character,
-                                                   FUN =  function(x) outerH(x)))
+  #ptm <- proc.time()
+  twoCharFilter$BE  <- unlist(pbapply::pblapply(twoCharFilter$character,
+                                                   FUN =  function(x) branchEntropy(x)))
+
+  #by(twoCharFilter,
+  #   twoCharFilter$character,
+  #   FUN = function(x) branchEntropy(as.character(x)))
+  #proc.time() - ptm
+
+  cat("DONE ", crayon::green(cli::symbol$tick), "\n")
+
+  cat(">>> Normalization...", "\n")
   outliers <- graphics::boxplot(twoCharFilter$log, plot=FALSE)$out
   twoCharFilter <- twoCharFilter[-which(twoCharFilter$log %in% outliers),]
   twoCharFilter$normLog <- with(twoCharFilter, normalize(twoCharFilter$log))
-  twoCharFilter$normBE <- with(twoCharFilter, normalize(innerEntropy-outerEntropy))
+  twoCharFilter$normBE <- with(twoCharFilter, normalize(BE))
   twoCharFilter$score <- with(twoCharFilter,(1-lambda)*normLog-lambda*normBE)
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
+  assign("twoCharFilter", twoCharFilter, envir = .GlobalEnv)
 
   Optics(steps, optics, threshold, lambda,bayesianCutoff)
 }
@@ -93,6 +105,7 @@ seed <- function(userTwoChar) {
   colnames(userTwoChar_drop) <- c("character","log")
 
   twoCharFilter <-dplyr::bind_rows(userTwoChar_drop, twoCharFilter)
+  cat("DONE ", crayon::green(cli::symbol$tick), "\n")
   return(twoCharFilter)
 }
 
@@ -145,15 +158,15 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       pb$tick()
       Sys.sleep(1 / 100)
     }
-    optlist <- as.data.frame(table(unlist(optlist)))
+    #optlist <<- as.data.frame(table(unlist(optlist)))
+    assign("optlist", as.data.frame(table(unlist(optlist))), envir = .GlobalEnv)
     num_char <- as.data.frame(unlist(num_char))
     return(cat("DONE ", crayon::green(cli::symbol$tick), "\n",
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("optlist"))))
   } else {
     cat(">>> Word mining...", "\n")
     twoCharFilter2 <- twoCharFilter
-    twoCharFilter2$score <- with(twoCharFilter2,
-                                 (1-lambda)*normLog-lambda*normBE)
+    twoCharFilter2$score <- with(twoCharFilter2, (1-lambda)*normLog-lambda*normBE)
     twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile(twoCharFilter2$score, probs = 1:100/100)[threshold],]
 
     cl <- nextWordMiner(twoCharFilter2,2, bayesianCutoff)
@@ -180,8 +193,12 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     #final_dn <- append(final_dn,cl$cont)
     #final_dn <- append(final_dn,cl2$cont)
     #final_dn <- append(final_dn,cl3$cont)
-    final_dn <- unique(unlist(final_dn))
+
+    #final_dn <<- unique(unlist(final_dn))
+    assign("final_dn", unique(unlist(final_dn)), envir = .GlobalEnv)
     return(cat("DONE ", crayon::green(cli::symbol$tick), "\n",
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("final_dn"))))
   }
 }
+
+

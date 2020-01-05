@@ -15,3 +15,5 @@ utils::globalVariables(c("segWords",
                          "threeChar",
                          "fourChar",
                          "fiveChar"))
+
+

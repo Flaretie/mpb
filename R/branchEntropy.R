@@ -11,37 +11,33 @@
 #' }
 
 branchEntropy <- function(two_chars) {
-  return(outerH(two_chars)-innerH(two_chars))
+  candidate <- strsplit(two_chars,"")[[1]]
+  h_l_r <- feq_counter_R(candidate[1], segWords)
+  h_r_l <- feq_counter_L(candidate[2], segWords)
+
+  h_r <- feq_counter_R(candidate[2], segWords)
+  h_l <- feq_counter_L(candidate[1], segWords)
+  return(min(h_r,h_l)-min(h_l_r,h_r_l))
 }
 
 # inner entropy calculate
-innerH <- function(two_chars) {
-
-  if(exists("segWords")) {
-    h_l_r <- feq_counter_R(strsplit(two_chars,"")[[1]][1], segWords)
-    h_r_l <- feq_counter_L(strsplit(two_chars,"")[[1]][2], segWords)
-    return(min(h_l_r,h_r_l))
-  } else {
-    warning("Please loading your file first.")
-  }
-}
+#innerH <- function(two_chars) {
+#    h_l_r <- feq_counter_R(strsplit(two_chars,"")[[1]][1], segWords)
+#    h_r_l <- feq_counter_L(strsplit(two_chars,"")[[1]][2], segWords)
+#    return(min(h_l_r,h_r_l))
+#}
 
 # outer entropy calculate
-outerH <- function(two_chars) {
-
-  if(exists("segWords")) {
-    h_r <- feq_counter_R(strsplit(two_chars,"")[[1]][2], segWords)
-    h_l <- feq_counter_L(strsplit(two_chars,"")[[1]][1], segWords)
-    return(min(h_r,h_l))
-  } else {
-    warning("Please loading your file first.")
-  }
-}
+#outerH <- function(two_chars) {
+#    h_r <- feq_counter_R(strsplit(two_chars,"")[[1]][2], segWords)
+#    h_l <- feq_counter_L(strsplit(two_chars,"")[[1]][1], segWords)
+#    return(min(h_r,h_l))
+#}
 
 
 feq_counterR <- function(cand_word, segWords) {
 
-  word_list <- c()
+  assign("word_list", c(), envir = .GlobalEnv)
 
   for (j in seq_along(segWords)) {
     if (cand_word == segWords[j])
@@ -49,6 +45,7 @@ feq_counterR <- function(cand_word, segWords) {
     else
       next
   }
+  assign("word_list", word_list, envir = .GlobalEnv)
   char_table <- as.data.frame(table(word_list))
   char_table <- char_table[order(char_table$Freq, decreasing = T),]
   rownames(char_table) <- NULL
@@ -56,6 +53,7 @@ feq_counterR <- function(cand_word, segWords) {
   char_table$pct <- with(char_table, Freq/sum(char_table$Freq))
   char_table$global_fequency <- with(char_table, Freq/length(segWords))
   entropy <- sum(unlist(lapply(char_table$pct, function(x) -x*log2(x))))
+  assign("entropy", sum(unlist(lapply(char_table$pct, function(x) -x*log2(x)))), envir = .GlobalEnv)
   return(char_table)
 }
 
@@ -66,7 +64,7 @@ feq_counter_R <- function(cand_word, segWords) {
 
 feq_counterL <- function(cand_word, segWords) {
 
-  word_list <- c()
+  assign("word_list", c(), envir = .GlobalEnv)
 
   for (j in seq_along(segWords)) {
     if (j == 1)
@@ -76,12 +74,14 @@ feq_counterL <- function(cand_word, segWords) {
     else
       next
   }
+  assign("word_list", word_list, envir = .GlobalEnv)
   char_table <- as.data.frame(table(word_list))
   char_table <- char_table[order(char_table$Freq, decreasing = T),]
   rownames(char_table) <- NULL
 
   char_table$pct <- with(char_table, Freq/sum(char_table$Freq))
   entropy <- sum(unlist(lapply(char_table$pct, function(x) -x*log2(x))))
+  assign("entropy", sum(unlist(lapply(char_table$pct, function(x) -x*log2(x)))), envir = .GlobalEnv)
   return(char_table)
 }
 

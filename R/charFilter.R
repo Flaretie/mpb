@@ -12,3 +12,4 @@ charFilter <- function(userchar, realworld) {
   rownames(mergedData) <- NULL
   return(mergedData)
 }
+

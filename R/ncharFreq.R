@@ -25,6 +25,7 @@ ncharFreq <- function(data, x, charfeq = NULL) {
   # calculate word frequency and sort the value in descending order
   # reset column names and index
   temFeq <- temFeq[order(temFeq$Freq, decreasing = T),]
+
   colnames(temFeq) <- c('character','freq')
   rownames(temFeq) <- NULL
   temFeq$pct <- with(temFeq, freq/sum(temFeq$freq))
@@ -40,7 +41,7 @@ ncharFreq <- function(data, x, charfeq = NULL) {
     # calcualte character frequency in each word
     temp_df <- do.call(rbind, sapply(as.character(temFeq$character), FUN = function(x) strsplit(x,"")))
     for(j in 1:x) {
-      temFeq[,LETTERS[j]]<- temp_df[,j] # create new column to store single character
+      temFeq[,LETTERS[j]] <- temp_df[,j] # create new column to store single character
       temFeq[,LETTERS[j]] <- unlist(lapply(temFeq[,LETTERS[j]],
                                            FUN = function(x) charfeq[charfeq$character == x,]$pct))
       #replace the single char by its global frequency
