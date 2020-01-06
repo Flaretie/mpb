@@ -36,7 +36,9 @@ nextWordMiner <- function(n_char_final, numOfChar, bayesianCutoff) {
         # filte with bayesian stats
         tem_char_df <- feq_counterR(unique(tail_char)[i], segWords)
         tem_charB <- levels(droplevels(tem_char_df[tem_char_df$pct >= bayesianCutoff,]$word_list))
-        if(length(tem_charB) == 0) next()
+        if(length(tem_charB) == 0) {
+          next()
+        } else {
           tem_char <- n_char_final[n_char_final[,LETTERS[1]] == unique(tail_char)[i],]
           tem_char <- tem_char[tem_char$B %in% tem_charB,]$character
           # Get all characters before "A"
@@ -45,9 +47,8 @@ nextWordMiner <- function(n_char_final, numOfChar, bayesianCutoff) {
                            unique(tail_char)[i],]),][,LETTERS[numOfChar-1]]
           cl$cont <- append(cl$cont,unlist(lapply(tem_first_char,
                                                   function(tem_first_char) paste0(
-                                                    tem_first_char,tem_char
-                                                  ))))
-
+                                                    tem_first_char,tem_char))))
+        }
       } else {
         cl$stop <- append(cl$stop,
                           as.character(n_char_final[n_char_final[,LETTERS[numOfChar]] == unique(tail_char)[i],]$character))

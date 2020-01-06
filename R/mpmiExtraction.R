@@ -122,7 +122,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     for (i in 1:steps) {
       twoCharFilter2 <- twoCharFilter
       twoCharFilter2$score <- with(twoCharFilter2,
-                                   (1-0.01*i*n)*normLog-0.01*i*n*normBE)
+                                   (1-0.01*i*n)*normLog+0.01*i*n*normBE)
       ifelse(threshold <= 100 & threshold >= 1,
              twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile(twoCharFilter2$score,
                                                                               probs = 1:100/100)[threshold],],
@@ -149,9 +149,9 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       final_dn <- append(final_dn,cl2$stop)
       final_dn <- append(final_dn,cl3$stop)
 
-      #final_dn <- append(final_dn,cl$cont)
-      #final_dn <- append(final_dn,cl2$cont)
-      #final_dn <- append(final_dn,cl3$cont)
+      final_dn <- append(final_dn,cl$cont)
+      final_dn <- append(final_dn,cl2$cont)
+      final_dn <- append(final_dn,cl3$cont)
       final_dn <- unique(unlist(final_dn))
       optlist <- append(optlist, final_dn)
       num_char <- append(num_char, length(final_dn))
@@ -166,7 +166,7 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
   } else {
     cat(">>> Word mining...", "\n")
     twoCharFilter2 <- twoCharFilter
-    twoCharFilter2$score <- with(twoCharFilter2, (1-lambda)*normLog-lambda*normBE)
+    twoCharFilter2$score <- with(twoCharFilter2, (1-lambda)*normLog+lambda*normBE)
     twoCharFilter2 <- twoCharFilter2[twoCharFilter2$score > stats::quantile(twoCharFilter2$score, probs = 1:100/100)[threshold],]
 
     cl <- nextWordMiner(twoCharFilter2,2, bayesianCutoff)
@@ -200,5 +200,3 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("final_dn"))))
   }
 }
-
-

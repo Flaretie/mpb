@@ -12,9 +12,11 @@
 
 branchEntropy <- function(two_chars) {
   candidate <- strsplit(two_chars,"")[[1]]
+  #inner
   h_l_r <- feq_counter_R(candidate[1], segWords)
   h_r_l <- feq_counter_L(candidate[2], segWords)
 
+  #outer
   h_r <- feq_counter_R(candidate[2], segWords)
   h_l <- feq_counter_L(candidate[1], segWords)
   return(min(h_r,h_l)-min(h_l_r,h_r_l))
