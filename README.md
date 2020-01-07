@@ -14,7 +14,15 @@ You can install the released version of mpb from [CRAN](https://CRAN.R-project.o
 
 ``` r
 install.packages("mpb")
+library(mpb)
 ```
+You can install the developing version of mpb with:
+
+``` r
+devtools::install_github("Flaretie/mpb")
+library(mpb)
+```
+
 
 ## Example
 

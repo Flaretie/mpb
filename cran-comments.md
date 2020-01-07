@@ -1,3 +1,5 @@
+## This is a new submission.
+
 ## Test environments
 * local OS X install, R 3.3.2
 * ubuntu 14.04 (on travis-ci), R 3.3.2
