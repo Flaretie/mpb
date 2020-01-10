@@ -18,14 +18,14 @@ userDataImport <- function(df, ChineseCharFilter = TRUE) {
     warning("'df' must be a dataframe with single column.")
   } else {
     colnames(df) <- c("Candidate List")
-    #userdf_t2h <<- paste0(df$`Candidate List`, collapse = "") #GLOBAL
-    assign("userdf_t2h", paste0(df$`Candidate List`, collapse = ""), envir = .GlobalEnv)
-    #userdf_split <<- strsplit(userdf_t2h, "")[[1]] # GLOBAL
-    assign("userdf_split", strsplit(userdf_t2h, "")[[1]], envir = .GlobalEnv)
+    userdf_t2h <- paste0(df$`Candidate List`, collapse = "") #GLOBAL
+    #assign("userdf_t2h", paste0(df$`Candidate List`, collapse = ""), envir = .GlobalEnv)
+    userdf_split <- strsplit(userdf_t2h, "")[[1]] # GLOBAL
+    #assign("userdf_split", strsplit(userdf_t2h, "")[[1]], envir = .GlobalEnv)
     seg_words <- strsplit(userdf_t2h, "")
     tableWord <- table(seg_words)
-    #segWords <<- seg_words[[1]][-1] #GLOBAL
-    assign("segWords", seg_words[[1]][-1], envir = .GlobalEnv)
+    segWords <- seg_words[[1]][-1] #GLOBAL
+    #assign("segWords", seg_words[[1]][-1], envir = .GlobalEnv)
     tableWord <- as.data.frame(tableWord)
     tableWord <- tableWord[order(tableWord$Freq, decreasing = T),]
     colnames(tableWord)[1] <- c("character")

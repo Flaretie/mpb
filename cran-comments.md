@@ -1,4 +1,6 @@
-## This is a new submission.
+## TIn this submission I fixed
+* mis-spelled words in DESCRIPTION
+* Undefined global functions or variables
 
 ## Test environments
 * local OS X install, R 3.3.2

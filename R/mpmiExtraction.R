@@ -28,10 +28,10 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
 
   # process user file here.
   cat(">>> Start Processing import file...", "\n")
-  assign("userOneChar", onecharFreq(userdf_t2h), envir = .GlobalEnv)
-  #userOneChar <<- onecharFreq(userdf_t2h)
-  #userTwoChar <<- ncharFreq(userdf_t2h, 2, userOneChar)
-  assign("userTwoChar", ncharFreq(userdf_t2h, 2, userOneChar), envir = .GlobalEnv)
+  #assign("userOneChar", onecharFreq(userdf_t2h), envir = .GlobalEnv)
+  #assign("userTwoChar", ncharFreq(userdf_t2h, 2, userOneChar), envir = .GlobalEnv)
+  userOneChar <- onecharFreq(userdf_t2h)
+  userTwoChar <- ncharFreq(userdf_t2h, 2, userOneChar)
   userThreeChar <- ncharFreq(userdf_t2h, 3)
   userFourChar <- ncharFreq(userdf_t2h, 4)
   userFiveChar <- ncharFreq(userdf_t2h, 5)
@@ -43,12 +43,12 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   # process real world data.
   cat(">>> Merging and Filtering data...", "\n")
 
-  #threeCharFilter <<- suppressWarnings(charFilter(userThreeChar, rwstats::threeChar))
-  #fourCharFilter <<- suppressWarnings(charFilter(userFourChar, rwstats::fourChar))
-  #fiveCharFilter <<- suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar))
-  assign("threeCharFilter", suppressWarnings(charFilter(userThreeChar, rwstats::threeChar)), envir = .GlobalEnv)
-  assign("fourCharFilter", suppressWarnings(charFilter(userFourChar, rwstats::fourChar)), envir = .GlobalEnv)
-  assign("fiveCharFilter", suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar)), envir = .GlobalEnv)
+  threeCharFilter <- suppressWarnings(charFilter(userThreeChar, rwstats::threeChar))
+  fourCharFilter <- suppressWarnings(charFilter(userFourChar, rwstats::fourChar))
+  fiveCharFilter <- suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar))
+  #assign("threeCharFilter", suppressWarnings(charFilter(userThreeChar, rwstats::threeChar)), envir = .GlobalEnv)
+  #assign("fourCharFilter", suppressWarnings(charFilter(userFourChar, rwstats::fourChar)), envir = .GlobalEnv)
+  #assign("fiveCharFilter", suppressWarnings(charFilter(userFiveChar, rwstats::fiveChar)), envir = .GlobalEnv)
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
 
 
@@ -73,7 +73,7 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   twoCharFilter$normBE <- with(twoCharFilter, normalize(BE))
   twoCharFilter$score <- with(twoCharFilter,(1-lambda)*normLog-lambda*normBE)
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
-  assign("twoCharFilter", twoCharFilter, envir = .GlobalEnv)
+  #assign("twoCharFilter", twoCharFilter, envir = .GlobalEnv)
 
   Optics(steps, optics, threshold, lambda,bayesianCutoff)
 }
@@ -158,8 +158,8 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       pb$tick()
       Sys.sleep(1 / 100)
     }
-    #optlist <<- as.data.frame(table(unlist(optlist)))
-    assign("optlist", as.data.frame(table(unlist(optlist))), envir = .GlobalEnv)
+    optlist <- as.data.frame(table(unlist(optlist)))
+    #assign("optlist", as.data.frame(table(unlist(optlist))), envir = .GlobalEnv)
     num_char <- as.data.frame(unlist(num_char))
     return(cat("DONE ", crayon::green(cli::symbol$tick), "\n",
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("optlist"))))
@@ -194,8 +194,8 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     #final_dn <- append(final_dn,cl2$cont)
     #final_dn <- append(final_dn,cl3$cont)
 
-    #final_dn <<- unique(unlist(final_dn))
-    assign("final_dn", unique(unlist(final_dn)), envir = .GlobalEnv)
+    final_dn <- unique(unlist(final_dn))
+    #assign("final_dn", unique(unlist(final_dn)), envir = .GlobalEnv)
     return(cat("DONE ", crayon::green(cli::symbol$tick), "\n",
                ">>>Extracted word has been saved as", crayon::bgWhite(crayon::black("final_dn"))))
   }

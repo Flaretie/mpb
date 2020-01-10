@@ -39,7 +39,8 @@ branchEntropy <- function(two_chars) {
 
 feq_counterR <- function(cand_word, segWords) {
 
-  assign("word_list", c(), envir = .GlobalEnv)
+  word_list <- c()
+  #assign("word_list", c(), envir = .GlobalEnv)
 
   for (j in seq_along(segWords)) {
     if (cand_word == segWords[j])
@@ -47,7 +48,8 @@ feq_counterR <- function(cand_word, segWords) {
     else
       next
   }
-  assign("word_list", word_list, envir = .GlobalEnv)
+  word_list <- word_list
+  #assign("word_list", word_list, envir = .GlobalEnv)
   char_table <- as.data.frame(table(word_list))
   char_table <- char_table[order(char_table$Freq, decreasing = T),]
   rownames(char_table) <- NULL
@@ -55,7 +57,7 @@ feq_counterR <- function(cand_word, segWords) {
   char_table$pct <- with(char_table, Freq/sum(char_table$Freq))
   char_table$global_fequency <- with(char_table, Freq/length(segWords))
   entropy <- sum(unlist(lapply(char_table$pct, function(x) -x*log2(x))))
-  assign("entropy", sum(unlist(lapply(char_table$pct, function(x) -x*log2(x)))), envir = .GlobalEnv)
+  #assign("entropy", sum(unlist(lapply(char_table$pct, function(x) -x*log2(x)))), envir = .GlobalEnv)
   return(char_table)
 }
 
@@ -65,8 +67,8 @@ feq_counter_R <- function(cand_word, segWords) {
 }
 
 feq_counterL <- function(cand_word, segWords) {
-
-  assign("word_list", c(), envir = .GlobalEnv)
+  word_list <- c()
+  #assign("word_list", c(), envir = .GlobalEnv)
 
   for (j in seq_along(segWords)) {
     if (j == 1)
@@ -76,14 +78,15 @@ feq_counterL <- function(cand_word, segWords) {
     else
       next
   }
-  assign("word_list", word_list, envir = .GlobalEnv)
+  word_list <- word_list
+  #assign("word_list", word_list, envir = .GlobalEnv)
   char_table <- as.data.frame(table(word_list))
   char_table <- char_table[order(char_table$Freq, decreasing = T),]
   rownames(char_table) <- NULL
 
   char_table$pct <- with(char_table, Freq/sum(char_table$Freq))
   entropy <- sum(unlist(lapply(char_table$pct, function(x) -x*log2(x))))
-  assign("entropy", sum(unlist(lapply(char_table$pct, function(x) -x*log2(x)))), envir = .GlobalEnv)
+  #assign("entropy", sum(unlist(lapply(char_table$pct, function(x) -x*log2(x)))), envir = .GlobalEnv)
   return(char_table)
 }
 

@@ -1,6 +1,7 @@
 utils::globalVariables(c("segWords",
                          "userdf_t2h",
                          "userOneChar",
+                         "userTwoChar",
                          "num_char",
                          "drugnames",
                          "two_char",
