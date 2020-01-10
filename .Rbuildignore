@@ -6,3 +6,4 @@
 ^README\.Rmd$
 ^appveyor\.yml$
 ^CRAN-RELEASE$
+^LICENSE\.md$
