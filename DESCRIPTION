@@ -1,5 +1,5 @@
 Package: mpb
-Title: New Word Miner based on Modified Point Mutual Information and Branch Entropy
+Title: New Word Miner Based on Modified Point Mutual Information and Branch Entropy
 Version: 0.9
 Authors@R: c(
     person("Yitao", "Ma", , "claret0127@gmail.com", c("aut", "cre")),

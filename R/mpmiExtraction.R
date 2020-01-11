@@ -78,10 +78,6 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   Optics(steps, optics, threshold, lambda,bayesianCutoff)
 }
 
-
-
-
-
 seed <- function(userTwoChar) {
   cat(">>> Mining seeds...", "\n")
   userTwoChar <- userTwoChar[userTwoChar$test_log > 0,]
@@ -149,9 +145,9 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
       final_dn <- append(final_dn,cl2$stop)
       final_dn <- append(final_dn,cl3$stop)
 
-      final_dn <- append(final_dn,cl$cont)
-      final_dn <- append(final_dn,cl2$cont)
-      final_dn <- append(final_dn,cl3$cont)
+      #final_dn <- append(final_dn,cl$cont)
+      #final_dn <- append(final_dn,cl2$cont)
+      #final_dn <- append(final_dn,cl3$cont)
       final_dn <- unique(unlist(final_dn))
       optlist <- append(optlist, final_dn)
       num_char <- append(num_char, length(final_dn))
@@ -190,9 +186,9 @@ Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
     final_dn <- append(final_dn,cl2$stop)
     final_dn <- append(final_dn,cl3$stop)
 
-    #final_dn <- append(final_dn,cl$cont)
-    #final_dn <- append(final_dn,cl2$cont)
-    #final_dn <- append(final_dn,cl3$cont)
+    final_dn <- append(final_dn,cl$cont)
+    final_dn <- append(final_dn,cl2$cont)
+    final_dn <- append(final_dn,cl3$cont)
 
     final_dn <- unique(unlist(final_dn))
     #assign("final_dn", unique(unlist(final_dn)), envir = .GlobalEnv)

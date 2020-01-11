@@ -22,21 +22,6 @@ branchEntropy <- function(two_chars) {
   return(min(h_r,h_l)-min(h_l_r,h_r_l))
 }
 
-# inner entropy calculate
-#innerH <- function(two_chars) {
-#    h_l_r <- feq_counter_R(strsplit(two_chars,"")[[1]][1], segWords)
-#    h_r_l <- feq_counter_L(strsplit(two_chars,"")[[1]][2], segWords)
-#    return(min(h_l_r,h_r_l))
-#}
-
-# outer entropy calculate
-#outerH <- function(two_chars) {
-#    h_r <- feq_counter_R(strsplit(two_chars,"")[[1]][2], segWords)
-#    h_l <- feq_counter_L(strsplit(two_chars,"")[[1]][1], segWords)
-#    return(min(h_r,h_l))
-#}
-
-
 feq_counterR <- function(cand_word, segWords) {
 
   word_list <- c()
@@ -94,3 +79,18 @@ feq_counter_L <- function(cand_word, segWords) {
   feq_counterL(cand_word, segWords)
   return(entropy)
 }
+
+
+# inner entropy calculate
+#innerH <- function(two_chars) {
+#    h_l_r <- feq_counter_R(strsplit(two_chars,"")[[1]][1], segWords)
+#    h_r_l <- feq_counter_L(strsplit(two_chars,"")[[1]][2], segWords)
+#    return(min(h_l_r,h_r_l))
+#}
+
+# outer entropy calculate
+#outerH <- function(two_chars) {
+#    h_r <- feq_counter_R(strsplit(two_chars,"")[[1]][2], segWords)
+#    h_l <- feq_counter_L(strsplit(two_chars,"")[[1]][1], segWords)
+#    return(min(h_r,h_l))
+#}
