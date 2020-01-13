@@ -12,8 +12,9 @@
 #' @return List of extracted strings.
 #' @export
 #' @examples
-#' \dontrun{
-#' mpmiExcraction(drugnames,
+#' \donttest{
+#' further examples for users (not used for checks)
+#' mpmiExcraction(as.data.frame(drugnames[1:20,]),
 #'                ChineseCharFilter = T,
 #'                lambda = 0.25,
 #'                optics = T,
@@ -24,6 +25,24 @@
 
 mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, steps = 100, threshold,bayesianCutoff){
   userDataImport(df, ChineseCharFilter = T)
+  if (!requireNamespace("crayon", quietly = TRUE)) {
+    stop("Package \"crayon\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  if (!requireNamespace("cli", quietly = TRUE)) {
+    stop("Package \"cli\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+
+  if (!requireNamespace("rwstats", quietly = TRUE)) {
+    stop("Package \"rwstats\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  if (!requireNamespace("pbapply", quietly = TRUE)) {
+    stop("Package \"pbapply\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+
   # global: userone_char, userdf_t2h, segWords
 
   # process user file here.
@@ -75,10 +94,20 @@ mpmiExcraction <- function(df, ChineseCharFilter = T, lambda = 0.25 , optics, st
   cat("DONE ", crayon::green(cli::symbol$tick), "\n")
   #assign("twoCharFilter", twoCharFilter, envir = .GlobalEnv)
 
-  Optics(steps, optics, threshold, lambda,bayesianCutoff)
+
 }
 
 seed <- function(userTwoChar) {
+
+  if (!requireNamespace("stats", quietly = TRUE)) {
+    stop("Package \"stats\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  if (!requireNamespace("cli", quietly = TRUE)) {
+    stop("Package \"cli\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+
   cat(">>> Mining seeds...", "\n")
   userTwoChar <- userTwoChar[userTwoChar$test_log > 0,]
   userTwoChar <- userTwoChar[order(userTwoChar$test_log, decreasing = T),]
@@ -106,6 +135,22 @@ seed <- function(userTwoChar) {
 }
 
 Optics <- function(steps, optics, threshold, lambda,bayesianCutoff) {
+  if (!requireNamespace("progress", quietly = TRUE)) {
+    stop("Package \"progress\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  if (!requireNamespace("stats", quietly = TRUE)) {
+    stop("Package \"stats\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  if (!requireNamespace("cli", quietly = TRUE)) {
+    stop("Package \"cli\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  if (!requireNamespace("crayon", quietly = TRUE)) {
+    stop("Package \"crayon\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
   if (optics == TRUE) {
     pb <- progress::progress_bar$new(
       format = "  Optimizating [:bar] :percent in :elapsed",

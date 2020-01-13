@@ -1,4 +1,8 @@
 charFilter <- function(userchar, realworld) {
+  if (!requireNamespace("stats", quietly = TRUE)) {
+    stop("Package \"stats\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
   # Left merge default and realworld dataframe
   mergedData <- dplyr::left_join(userchar, realworld, by = c("character"))
   # if the word contains 2 characters.

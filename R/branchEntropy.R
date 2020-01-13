@@ -6,7 +6,8 @@
 #' @return branch entropy of target word.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' further examples for users (not used for checks)
 #' branchEntropy("test character")
 #' }
 

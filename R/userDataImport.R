@@ -7,13 +7,16 @@
 #' @return A dataframe containing the next word and its occurrence and frequency
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' further examples for users (not used for checks)
 #' userDataImport(drugnames)
 #' }
 
 userDataImport <- function(df, ChineseCharFilter = TRUE) {
-
-
+  if (!requireNamespace("crayon", quietly = TRUE)) {
+    stop("Package \"crayon\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
   if (!(is.data.frame(df) & is.data.frame(df) == 1)) {
     warning("'df' must be a dataframe with single column.")
   } else {

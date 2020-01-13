@@ -36,8 +36,9 @@ List of extracted strings.
 Extract words based on MPMI+BE alogrithm
 }
 \examples{
-\dontrun{
-mpmiExcraction(drugnames,
+\donttest{
+further examples for users (not used for checks)
+mpmiExcraction(as.data.frame(drugnames[1:20,]),
                ChineseCharFilter = T,
                lambda = 0.25,
                optics = T,

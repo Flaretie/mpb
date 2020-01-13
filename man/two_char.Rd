@@ -19,9 +19,4 @@ two_char
 \description{
 This dataframe contains Chinese Word with two characters with its branch entropy and pmi value
 }
-\examples{
-\dontrun{
- two_char
- }
-}
 \keyword{datasets}

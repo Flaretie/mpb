@@ -17,7 +17,8 @@ This function ccalculate both inner and outer entropy of candidate words.
 chinese character frequency Statistics table.
 }
 \examples{
-\dontrun{
+\donttest{
+further examples for users (not used for checks)
 branchEntropy("test character")
 }
 }

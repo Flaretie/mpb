@@ -6,10 +6,7 @@
 #' \describe{
 #' \item{\code{V1}}{Target string.}
 #' }
-#' @examples
-#' \dontrun{
-#'  drugnames
-#' }
+#'
 "drugnames"
 
 #' Frequency, PMI and BE dataframe of Chinese words wtih two characters.
@@ -25,9 +22,5 @@
 #' \item{\code{B}}{entropy of second character in target word.}
 #' \item{\code{real_log}}{pmi value of target word.}
 #' }
-#' @examples
-#' \dontrun{
-#'  two_char
-#'  }
 "two_char"
 

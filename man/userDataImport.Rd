@@ -18,7 +18,8 @@ A dataframe containing the next word and its occurrence and frequency
 Processing user data
 }
 \examples{
-\dontrun{
+\donttest{
+further examples for users (not used for checks)
 userDataImport(drugnames)
 }
 }

@@ -14,9 +14,4 @@ drugnames
 \description{
 This dataframe contains examples of user-imported data.
 }
-\examples{
-\dontrun{
- drugnames
-}
-}
 \keyword{datasets}
