@@ -18,7 +18,6 @@ chinese character frequency Statistics table.
 }
 \examples{
 \donttest{
-further examples for users (not used for checks)
 branchEntropy("test character")
 }
 }

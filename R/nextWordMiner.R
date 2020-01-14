@@ -8,7 +8,7 @@
 #' @return List of new candidates words and words which cannot be extended.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' nextWordMiner(df, 2, 0.3)
 #' }
 

@@ -9,6 +9,15 @@
 #'
 "drugnames"
 
+#' This dataframe contains examples of user-imported data(used for test).
+#'
+#' @format A data frame with 1 variables:
+#' \describe{
+#' \item{\code{V1}}{Target string.}
+#' }
+#'
+"drugnames_test"
+
 #' Frequency, PMI and BE dataframe of Chinese words wtih two characters.
 #'
 #' This dataframe contains Chinese Word with two characters with its branch entropy and pmi value

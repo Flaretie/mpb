@@ -13,7 +13,6 @@
 #' @export
 #' @examples
 #' \donttest{
-#' further examples for users (not used for checks)
 #' mpmiExcraction(as.data.frame(drugnames[1:20,]),
 #'                ChineseCharFilter = T,
 #'                lambda = 0.25,

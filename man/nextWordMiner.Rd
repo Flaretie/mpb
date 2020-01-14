@@ -20,7 +20,7 @@ List of new candidates words and words which cannot be extended.
 Extend candidate words based on Bayesian probability.
 }
 \examples{
-\dontrun{
+\donttest{
 nextWordMiner(df, 2, 0.3)
 }
 }

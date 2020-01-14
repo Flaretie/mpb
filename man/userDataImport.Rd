@@ -19,7 +19,6 @@ Processing user data
 }
 \examples{
 \donttest{
-further examples for users (not used for checks)
 userDataImport(drugnames)
 }
 }
