@@ -37,11 +37,10 @@ Extract words based on MPMI+BE alogrithm
 }
 \examples{
 \donttest{
-mpmiExcraction(as.data.frame(drugnames[1:20,]),
+mpmiExcraction(drugnames_test,
                ChineseCharFilter = T,
                lambda = 0.25,
-               optics = T,
-               steps = 100,
+               optics = F,
                threshold = 30,
                bayesianCutoff = 0.6)
 }

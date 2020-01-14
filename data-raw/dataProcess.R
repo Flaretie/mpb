@@ -6,6 +6,7 @@ drugnames <- as.data.frame(drugnames)
 
 # dataframe for testing
 drugnames_test <- as.data.frame(drugnames[1:20,])
+colnames(drugnames_test) <- "V1"
 Encoding(levels(drugnames$V1)) <- "UTF-8"
 
 tempChar <- do.call(rbind,sapply(as.character(two_char$character), FUN = function(x) strsplit(x,"")))
